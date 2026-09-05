@@ -1,0 +1,22 @@
+{
+  "name": "docstring",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "eval": "tsx apps/cli/src/index.ts eval",
+    "index": "tsx apps/cli/src/index.ts index",
+    "search": "tsx apps/cli/src/index.ts search",
+    "ask": "tsx apps/cli/src/index.ts ask",
+    "calibrate": "tsx apps/cli/src/index.ts calibrate"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.4",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2"
+  }
+}

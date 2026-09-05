@@ -1,0 +1,21 @@
+{
+  "name": "@docstring/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "docstring": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "eval": "tsx src/index.ts eval"
+  },
+  "dependencies": {
+    "@docstring/core": "workspace:*",
+    "@docstring/store": "workspace:*",
+    "@docstring/chunker": "workspace:*",
+    "@docstring/retrieval": "workspace:*",
+    "@docstring/answer": "workspace:*"
+  }
+}

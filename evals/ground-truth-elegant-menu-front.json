@@ -1,0 +1,1391 @@
+{
+  "meta": {
+    "repo": "elegant-menu-front",
+    "repoPath": "/Users/ben/Desktop/web-apps/elegant-menu/elegant-menu-front",
+    "gitSha": "f3a7acb699f128554473af358fcad516f1a83e4c",
+    "createdAt": "03/09/2026",
+    "version": 2,
+    "_instructions": [
+      "Every expectedFiles array below is a DRAFT inferred from filenames only. I have not read the source.",
+      "Set verified:true only after you have opened the file and confirmed the answer is actually there.",
+      "Unverified entries are worse than missing ones - they make recall look good while measuring nothing.",
+      "Where I was unsure I left a note. Those need your attention first.",
+      "Questions q067-q080 are unanswerable because this repo is frontend-only. That is the honest boundary of this index."
+    ]
+  },
+  "conventions": {
+    "categories": [
+      "locational",
+      "explanatory",
+      "cross-file",
+      "behavioural"
+    ],
+    "fields": {
+      "expectedFiles": "repo-relative paths that must appear in retrieved chunks",
+      "verified": "false until you have confirmed against the source",
+      "answerable": "false means the system SHOULD refuse",
+      "nearMiss": "the repo almost does this - the dangerous cases"
+    }
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the subdomain extracted to determine which restaurant's menu to load?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/getSubDomain.ts",
+        "src/middleware.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "multi-tenancy",
+        "routing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q002",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is locale routing configured?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/i18n/routing.ts",
+        "src/middleware.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "i18n"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q003",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the axios instance created, and what base URL does it use?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/axiosInstance.ts"
+      ],
+      "answerSketch": ["base URL is set to the API endpoint, likely using an environment variable or a default value."],
+      "tags": [
+        "api"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q004",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the auth token stored, and where is it attached to outgoing requests?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/HandleToken.tsx",
+        "src/lib/axiosInstance.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "auth"
+      ],
+      "notes": "Two-file answer - good test of whether retrieval returns both hops."
+    },
+    {
+      "id": "q005",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the global client state store defined?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/store.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "state"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q006",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Which file defines the TypeScript types for a dish and a menu?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/types/types.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "types",
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q007",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the QR code download implemented?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/QrDlButton.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q008",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is Cloudflare Turnstile rendered, and on which pages?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/Turnstil.tsx"
+      ],
+      "answerSketch": ["its rendered in create order dialog"],
+      "tags": [
+        "security"
+      ],
+      "notes": "Filename is misspelled (Turnstil) - useful test of lexical vs semantic retrieval."
+    },
+    {
+      "id": "q009",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where are images compressed before upload?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/compressImage.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "media"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q010",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where are Google Analytics events emitted from?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/gaEvents.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "analytics"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q011",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the order status to colour mapping defined?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/getStatusColor.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui",
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q012",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the sitemap generated, and what does it include?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/sitemap.ts"
+      ],
+      "answerSketch": ["it includes all the menu pages for each restaurant that has a menu, and other static pages"],
+      "tags": [
+        "seo"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q013",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the list of supported currency codes?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/currencyCodeList.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q014",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the screen wake lock used, and which view needs it?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useWakeLock.ts",
+        "src/app/[locale]/(root)/profile/manage-orders/page.tsx"
+      ],
+      "answerSketch": ["its used in manage orders screen"],
+      "tags": [
+        "hardware",
+        "ui"
+      ],
+      "notes": "Guessing this is for the kitchen order screen - confirm the consumer."
+    },
+    {
+      "id": "q015",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where are allergens rendered on the public menu?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/AllergenIcon.tsx",
+        "src/components/frontMenuComponents/AllergenGuide.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain",
+        "ui"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q016",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the customer support chat widget mounted?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/Chatwoot.tsx",
+        "src/app/(root)/layout.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "integrations"
+      ],
+      "notes": "Question avoids naming Chatwoot on purpose - tests semantic retrieval."
+    },
+    {
+      "id": "q017",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the theme provider set up?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/ThemeProvider.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q018",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the final public menu URL constructed?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/getFinalMenuUrl.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "routing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q019",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where are menu colour styles chosen and stored?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/MenuStyleColorSettings.tsx",
+        "src/components/MenuStyleColorPickerItem.tsx",
+        "styleObject.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "theming"
+      ],
+      "notes": "styleObject.ts is at repo root, not under src - check whether your indexer picks it up."
+    },
+    {
+      "id": "q020",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the card payment form implemented?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/CheckoutForm.tsx",
+        "src/components/PaymentForm.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "billing"
+      ],
+      "notes": "Two similarly-named components - confirm which does what."
+    },
+    {
+      "id": "q021",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where does a restaurant owner link their Telegram account?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/profile/ProfileTelegramSection.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "integrations"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q022",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the not-found page for a menu that does not exist?",
+      "answerable": true,
+      "verified": false,
+      "expectedFiles": [
+        "src/app/(menu)/not-found.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "routing"
+      ],
+      "notes": "Two not-found files exist - the distractor is src/app/[locale]/(root)/not-found.tsx."
+    },
+    {
+      "id": "q023",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does the app decide which restaurant's menu to render for an incoming request?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/middleware.ts",
+        "src/lib/getSubDomain.ts",
+        "src/app/(menu)/menu/[id]/page.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "multi-tenancy",
+        "routing"
+      ],
+      "notes": "Highest-value question in the set."
+    },
+    {
+      "id": "q024",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does internationalisation work \u2014 how are locales detected and messages loaded?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/i18n/request.ts",
+        "src/i18n/routing.ts",
+        "src/i18n/navigation.ts",
+        "src/middleware.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "i18n"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q025",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "What does the middleware do, and in what order does it apply its rules?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/middleware.ts"
+      ],
+      "answerSketch": ["middleware is responsible for routing, locale detection, and subdomain extraction. It applies rules in the order of subdomain extraction, locale detection, and then routing to the appropriate page."],
+      "tags": [
+        "routing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q026",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How do the (menu) and [locale]/(root) route groups differ, and why are they separate?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/(menu)/layout.tsx",
+        "src/app/[locale]/(root)/layout.tsx",
+        "src/middleware.ts"
+      ],
+      "answerSketch": ["one is for the public menu pages, the other is for the authenticated user pages. They are separate to isolate concerns and manage different layouts and access controls."],
+      "tags": [
+        "routing",
+        "architecture"
+      ],
+      "notes": "Architectural question - naive retrieval will likely return only one layout."
+    },
+    {
+      "id": "q027",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does the app fetch orders, and are they polled or pushed?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useOrders.ts"
+      ],
+      "answerSketch": ["the app subscribes to an SSE endpoint and re-fetches the orders when there is a new order"],
+      "tags": [
+        "data",
+        "realtime"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q028",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How is the logged-in user's data loaded and shared across components?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useUserData.ts",
+        "src/app/store.ts"
+      ],
+      "answerSketch": ["its stored in a global state store and fetched on login, then shared via context or hooks"],
+      "tags": [
+        "state",
+        "auth"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q029",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does subscription status gate access to features?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/CheckSubscription.tsx",
+        "src/components/UpgradeNoticePopup.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "billing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q030",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does a user change their subscription plan?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/ChangeSubsPlan.tsx",
+        "src/app/[locale]/(root)/pricing/page.tsx",
+        "src/components/PricingCard.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "billing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q031",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "What server actions exist, and what do they do?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/actions.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "architecture"
+      ],
+      "notes": "src/actions.ts is a single flat file - check whether your chunker splits it sensibly."
+    },
+    {
+      "id": "q032",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How is drag-or-reorder of menu items implemented?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/reOrderItems.ts",
+        "src/components/EditMenu.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui",
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q033",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does Google login work on the client side?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/[locale]/(root)/login/google/[user]/page.tsx",
+        "src/components/HandleToken.tsx",
+        "src/components/LoginBtn.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "auth"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q034",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does the Facebook login flow differ from Google's?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/[locale]/(root)/login/facebook/page.tsx",
+        "src/app/[locale]/(root)/login/google/[user]/page.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "auth"
+      ],
+      "notes": "Comparative question - requires both files. Good reranking test."
+    },
+    {
+      "id": "q035",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "Why are there two translation systems, and when is each used?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/translations/orderStatus.t.ts",
+        "src/translations/readme.txt",
+        "src/i18n/request.ts"
+      ],
+      "answerSketch": ["one is for public menu and was implemented manually, later the i18n system was added for the rest of the app. The public menu uses a different translation system because it needs to be static and not depend on server-side rendering."],
+      "tags": [
+        "i18n",
+        "architecture"
+      ],
+      "notes": "readme.txt in translations/ probably explains this - confirm."
+    },
+    {
+      "id": "q036",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does the kitchen order view stay awake and up to date?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useWakeLock.ts",
+        "src/hooks/useOrders.ts",
+        "src/components/OrderCardKitchen.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui",
+        "realtime"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q037",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does the quick order flow work?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/QuickOrder.tsx",
+        "src/components/createOrderDialogue/CreateOrderDialogue.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q038",
+      "category": "explanatory",
+      "difficulty": "easy",
+      "question": "How is category expand/collapse state managed on the menu?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useCategoryOpen.ts",
+        "src/components/frontMenuComponents/SexyCategory.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui",
+        "state"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q039",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does the menu language selector decide which languages to offer?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useMenuLang.ts",
+        "src/lib/isSupportedLang.ts",
+        "src/lib/getLangName.ts",
+        "src/components/frontMenuComponents/ChangeLang.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "i18n"
+      ],
+      "notes": "Four-file answer - the hardest recall test in the set."
+    },
+    {
+      "id": "q040",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How is the analytics dashboard rendered, and where does its data come from?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/[locale]/(root)/profile/analytics/page.tsx",
+        "src/components/ui/chart.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "analytics",
+        "ui"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q041",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does the PDF menu export work?",
+      "answerable": false,
+      "verified": true,
+      "expectedFiles": [
+      ],
+      "answerSketch": ["there is no pdf export feature"],
+      "tags": [
+        "export"
+      ],
+      "notes": "This is PDF GENERATION. Do not confuse with the backend's PDF ingestion - see q070."
+    },
+        {
+      "id": "q043",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace what happens from a customer scanning a QR code to the rendered menu appearing.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/middleware.ts",
+        "src/lib/getSubDomain.ts",
+        "src/app/(menu)/menu/[id]/page.tsx",
+        "src/components/frontMenuComponents/SexyMenuClient.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "routing",
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q044",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace a customer placing an order through to the restaurant seeing it in manage-orders.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/frontMenuComponents/SelectedItemsDialogue.tsx",
+        "src/actions.ts",
+        "src/hooks/useOrders.ts",
+        "src/app/[locale]/(root)/profile/manage-orders/page.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": "Crosses the API boundary - the answer here is necessarily partial. Decide how you score that."
+    },
+    {
+      "id": "q045",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace the login flow from clicking the login button to an authenticated session.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/LoginBtn.tsx",
+        "src/app/[locale]/(root)/login/page.tsx",
+        "src/components/HandleToken.tsx",
+        "src/lib/axiosInstance.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "auth"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q046",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace a subscription purchase from the pricing page to the payment success screen.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/[locale]/(root)/pricing/page.tsx",
+        "src/components/CheckoutForm.tsx",
+        "src/app/[locale]/(root)/payment-success/page.tsx",
+        "src/app/[locale]/(root)/payment-success/PaymentSuccessTracker.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "billing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q047",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace how a new dish is added and ends up visible on the public menu.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/AddDish.tsx",
+        "src/components/EditMenu.tsx",
+        "src/actions.ts",
+        "src/components/frontMenuComponents/SexyItem.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q048",
+      "category": "cross-file",
+      "difficulty": "medium",
+      "question": "Trace how a customer tracks an order after placing it.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/(menu)/order-tracking/[id]/page.tsx",
+        "src/translations/orderTracking.t.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q049",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "What happens when a partner creates a new sub-account for a restaurant?",
+      "answerable": true,
+      "verified": false,
+      "expectedFiles": [
+        "src/components/partnerAccountComponents/CreateNewAccount.tsx",
+        "src/components/partnerAccountComponents/ModifyUserSettings.tsx",
+        "src/app/[locale]/(root)/partner-profile/page.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "multi-tenancy"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q050",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace how changing the menu language changes what the customer sees.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/frontMenuComponents/ChangeLang.tsx",
+        "src/hooks/useMenuLang.ts",
+        "src/components/frontMenuComponents/SexyMenuClient.tsx",
+        "src/lib/isSupportedLang.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "i18n"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q051",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace how a menu colour change propagates to the rendered public menu.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/MenuStyleColorSettings.tsx",
+        "styleObject.ts",
+        "src/components/frontMenuComponents/SexyMenuClient.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "theming"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q052",
+      "category": "cross-file",
+      "difficulty": "medium",
+      "question": "What is the flow when a user requests deletion of their data?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/[locale]/(root)/data-deletion/page.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "compliance"
+      ],
+      "notes": "May be a static informational page rather than a flow - if so, reclassify."
+    },
+    {
+      "id": "q053",
+      "category": "cross-file",
+      "difficulty": "medium",
+      "question": "How does a new incoming order trigger the notification sound?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/Notification.tsx",
+        "src/hooks/useOrders.ts",
+        "public/sound/bell.wav"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui",
+        "realtime"
+      ],
+      "notes": "One expected file is a binary asset - decide whether non-code files are indexed at all."
+    },
+    {
+      "id": "q054",
+      "category": "cross-file",
+      "difficulty": "hard",
+      "question": "Trace an image from the file picker to being displayed on a dish.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/compressImage.ts",
+        "src/components/EditDish.tsx",
+        "src/components/frontMenuComponents/SexyImage.tsx",
+        "loader.js"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "media"
+      ],
+      "notes": "loader.js at repo root is probably the Next image loader - confirm."
+    },
+    {
+      "id": "q055",
+      "category": "cross-file",
+      "difficulty": "medium",
+      "question": "How does the profile activation checklist decide what is still incomplete?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/profile/ActivationChecklist.tsx",
+        "src/hooks/useUserData.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "onboarding"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q056",
+      "category": "cross-file",
+      "difficulty": "medium",
+      "question": "Trace how a menu category is created, edited, and reordered.",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/CategoryAdmin.tsx",
+        "src/components/EditCategory.tsx",
+        "src/lib/reOrderItems.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q057",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What happens when an API request fails \u2014 where is the error surfaced to the user?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/axiosInstance.ts",
+        "src/components/ui/use-toast.ts",
+        "src/components/ui/toaster.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "errors"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q058",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What happens if a menu id in the URL does not exist?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/(menu)/menu/[id]/page.tsx",
+        "src/app/(menu)/not-found.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "errors",
+        "routing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q059",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What happens if the stored auth token is expired or invalid?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/axiosInstance.ts",
+        "src/components/HandleToken.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "auth",
+        "errors"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q060",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What happens if a requested locale is not supported?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/isSupportedLang.ts",
+        "src/i18n/routing.ts",
+        "src/middleware.ts"
+      ],
+      "answerSketch": ["it falls back to english"],
+      "tags": [
+        "i18n",
+        "errors"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q061",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What does a user see when their subscription has expired and they open a gated page?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/CheckSubscription.tsx",
+        "src/components/UpgradeNoticePopup.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "billing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q062",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What happens if a user selects an image that is too large?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/lib/compressImage.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "media",
+        "errors"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q063",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What happens if the bot verification challenge fails?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/components/Turnstil.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "security",
+        "errors"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q064",
+      "category": "behavioural",
+      "difficulty": "hard",
+      "question": "What happens if order fetching fails repeatedly on the kitchen screen?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/hooks/useOrders.ts"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "errors",
+        "realtime"
+      ],
+      "notes": "There may be no handling at all - a legitimate and useful finding."
+    },
+    {
+      "id": "q065",
+      "category": "behavioural",
+      "difficulty": "easy",
+      "question": "What does the user see while the menu is still loading?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/(menu)/loading.tsx",
+        "src/components/Loading.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "ui"
+      ],
+      "notes": "Distractor: src/app/[locale]/(root)/loading.tsx."
+    },
+    {
+      "id": "q066",
+      "category": "behavioural",
+      "difficulty": "medium",
+      "question": "What does a new user with no menu yet see when they open their profile?",
+      "answerable": true,
+      "verified": true,
+      "expectedFiles": [
+        "src/app/[locale]/(root)/profile/page.tsx",
+        "src/components/profile/ActivationChecklist.tsx",
+        "src/components/WelcomPopUp/WelcomPopup.tsx"
+      ],
+      "answerSketch": [],
+      "tags": [
+        "onboarding"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q067",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the Stripe webhook signature verified?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "Webhook handling is backend-only. CheckoutForm.tsx and PaymentForm.tsx will retrieve with high confidence.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "billing"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q068",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Which file defines the MongoDB schema for orders?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "No database layer here. src/types/types.ts holds TS types and is a very strong distractor.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "data"
+      ],
+      "notes": "The single most likely false-confident answer in the set."
+    },
+    {
+      "id": "q069",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How is rate limiting configured on the orders API?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": false,
+      "refusalReason": "Backend concern, absent from this repo.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "api"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q070",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does the PDF ingestion pipeline extract structured menu data from an uploaded file?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "This repo only GENERATES PDFs (createMenuPdfButton.tsx). Ingestion is an n8n/backend workflow.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "ai"
+      ],
+      "notes": "Direction-reversal near-miss - export vs ingest. Excellent refusal test."
+    },
+    {
+      "id": "q071",
+      "category": "locational",
+      "difficulty": "medium",
+      "question": "Where is the thermal printer integration implemented?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": false,
+      "refusalReason": "Printer service is a separate local application, not in this repo.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "hardware"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q072",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How does the app choose between local and cloud LLM providers?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": false,
+      "refusalReason": "No LLM code in the frontend.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "ai"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q073",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where are the database migrations defined?",
+      "answerable": false,
+      "nearMiss": false,
+      "refusalReason": "No database in this repo.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "data"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q074",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How is the JWT signed, and what is its expiry?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "The frontend only receives and stores tokens. HandleToken.tsx is a strong distractor.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "auth"
+      ],
+      "notes": "Note the contrast with q004, which IS answerable. Good precision test."
+    },
+    {
+      "id": "q075",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the health check endpoint defined?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": false,
+      "refusalReason": "No server endpoints in this repo.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "ops"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q076",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How does the Telegram bot receive and process incoming webhook updates?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "Only the account-linking UI lives here. Bot logic is backend.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "integrations"
+      ],
+      "notes": "Contrast with q021, which IS answerable."
+    },
+    {
+      "id": "q077",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the GraphQL schema defined?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": false,
+      "refusalReason": "REST via axios only.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "api"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q078",
+      "category": "explanatory",
+      "difficulty": "hard",
+      "question": "How are order totals calculated and validated server-side?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "Client-side price display exists (ItemPrice.tsx) but server validation does not live here.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "domain"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q079",
+      "category": "locational",
+      "difficulty": "easy",
+      "question": "Where is the feature flag service configured?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": false,
+      "refusalReason": "No feature flag system.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "config"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "q080",
+      "category": "explanatory",
+      "difficulty": "medium",
+      "question": "How are Docker images built and deployed for this application?",
+      "answerable": false,
+      "verified": true,
+      "nearMiss": true,
+      "refusalReason": "Deployed on Vercel; no Dockerfile or CI workflow in the tree beyond dependabot.yml.",
+      "expectedFiles": [],
+      "answerSketch": [],
+      "tags": [
+        "ops"
+      ],
+      "notes": ""
+    }
+  ]
+}

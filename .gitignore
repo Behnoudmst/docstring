@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+*.tsbuildinfo
+
+# docstring index — rebuild with `pnpm index`
+.docstring/
+*.db
+*.db-wal
+*.db-shm
+
+# eval runs — keep ground-truth.json, ignore the results
+evals/results/
+
+# env
+.env
+.env.local
+
+# editors
+.vscode/
+.idea/
+.DS_Store
+.turbo/
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
