@@ -12,15 +12,21 @@ ollama pull nomic-embed-text
 ollama pull qwen2.5:3b       # only needed for ask_codebase
 ```
 
-Then point your agent at it. **VS Code / Copilot** — `.vscode/mcp.json`:
+Install the server, then find its absolute path:
+
+```bash
+npm install -g docstring-mcp
+which docstring-mcp
+```
+
+**VS Code / Copilot** — `.vscode/mcp.json` in the repo you want to search:
 
 ```json
 {
   "servers": {
     "docstring": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "docstring-mcp"]
+      "command": "/absolute/path/from/which/docstring-mcp"
     }
   }
 }
@@ -28,6 +34,14 @@ Then point your agent at it. **VS Code / Copilot** — `.vscode/mcp.json`:
 
 **Claude Desktop / Cursor** — same, but the top-level key is `mcpServers` and
 `type` is inferred rather than required.
+
+Restart your editor after adding the config. Saving the file is often not
+enough to make it reload.
+
+Use an absolute path rather than `npx docstring-mcp`. Editors launched from
+Finder or the Dock do not inherit your shell PATH, so a version manager like
+nvm, fnm or volta puts `npx` somewhere the editor cannot see, and the server
+fails to start with `spawn npx ENOENT`.
 
 That is the whole configuration. The server detects the repository from the
 directory your editor launches it in, and keeps the index at
