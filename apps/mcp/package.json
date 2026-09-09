@@ -1,0 +1,48 @@
+{
+  "name": "docstring-mcp",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "bin": {
+    "docstring-mcp": "./bundle/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "bundle": "tsup",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts",
+    "prepublishOnly": "pnpm bundle"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
+    "web-tree-sitter": "0.25.10",
+    "tree-sitter-wasms": "^0.1.13",
+    "sqlite-vec": "^0.1.9",
+    "zod": "^4.5.4"
+  },
+  "description": "Semantic code search and cited answers over your codebase, for coding agents. Runs entirely locally.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "code-search",
+    "rag",
+    "embeddings",
+    "ollama"
+  ],
+  "license": "MIT",
+  "files": [
+    "bundle",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "devDependencies": {
+    "@docstring/answer": "workspace:*",
+    "@docstring/chunker": "workspace:*",
+    "@docstring/core": "workspace:*",
+    "@docstring/retrieval": "workspace:*",
+    "@docstring/store": "workspace:*",
+    "tsup": "^8.5.1"
+  }
+}
