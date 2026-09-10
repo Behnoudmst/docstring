@@ -201,8 +201,8 @@ export class OpenAIEmbedder implements Embedder {
 }
 
 export function createEmbedder(spec: string): Embedder & { check(): Promise<void> } {
-  const [provider, model] = spec.includes(":") ? spec.split(":", 2) : ["ollama", spec];
+  const m = /^(ollama|openai):(.+)$/.exec(spec);
+  const [provider, model] = m ? [m[1], m[2]] : ["ollama", spec];
   if (provider === "openai") return new OpenAIEmbedder({ model });
-  if (provider === "ollama") return new OllamaEmbedder({ model });
-  throw new Error(`Unknown embedding provider "${provider}". Use ollama:<model> or openai:<model>.`);
+  return new OllamaEmbedder({ model });
 }
