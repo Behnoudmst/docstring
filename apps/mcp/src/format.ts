@@ -11,6 +11,22 @@ export function clampK(value: unknown, fallback: number, max: number): number {
   return Math.max(1, Math.min(max, Math.trunc(n)));
 }
 
+/**
+ * An empty result set hides its own cause: a filter that matched nothing looks
+ * exactly like a query that matched nothing. Saying which one happened stops
+ * the caller rephrasing a query that was never at fault, and stops it reading
+ * the emptiness as proof the code does not exist.
+ */
+export function formatNoPrefixMatch(raw: string, normalized: string): string {
+  const shown = raw === normalized ? `'${raw}'` : `'${raw}' (read as '${normalized}')`;
+  return (
+    `No indexed file is under ${shown}, so path_prefix discarded every result. ` +
+    `The search itself was not the problem and this is not evidence the code is ` +
+    `absent. Retry without path_prefix, or with a repo-relative prefix such as ` +
+    `'app/api/'.`
+  );
+}
+
 /** Agents parse this. Structured lines beat prose. */
 export function formatHits(hits: ScoredChunk[]): string {
   if (hits.length === 0) {

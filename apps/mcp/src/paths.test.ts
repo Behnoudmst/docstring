@@ -2,7 +2,13 @@ import { afterEach, describe, expect, it } from "vitest";
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync, utimesSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { checkStaleness, fallbackDbPath, findRepoRoot, resolvePaths } from "./paths.js";
+import {
+  checkStaleness,
+  fallbackDbPath,
+  findRepoRoot,
+  normalizePathPrefix,
+  resolvePaths,
+} from "./paths.js";
 
 const dirs: string[] = [];
 const tmp = () => {
@@ -99,5 +105,35 @@ describe("fallbackDbPath", () => {
     const b = fallbackDbPath("/Users/ben/work/other-repo");
     expect(a).not.toBe(b);
     expect(a).toMatch(/elegant-menu-front\.db$/);
+  });
+});
+
+describe("normalizePathPrefix", () => {
+  const root = "/Users/ben/work/vekt";
+
+  it("leaves a repo-relative prefix alone", () => {
+    expect(normalizePathPrefix("app/api/", root)).toBe("app/api/");
+  });
+
+  it("converts the absolute path an agent actually sends", () => {
+    expect(normalizePathPrefix(`${root}/app/api`, root)).toBe("app/api");
+  });
+
+  it("treats the repo root itself as no filter", () => {
+    expect(normalizePathPrefix(root, root)).toBe("");
+    expect(normalizePathPrefix(`${root}/`, root)).toBe("");
+  });
+
+  it("strips leading ./ and /", () => {
+    expect(normalizePathPrefix("./lib", root)).toBe("lib");
+    expect(normalizePathPrefix("/lib", root)).toBe("lib");
+  });
+
+  it("keeps a path outside the repo intact rather than silently rewriting it", () => {
+    expect(normalizePathPrefix("/etc/passwd", root)).toBe("etc/passwd");
+  });
+
+  it("does not strip a sibling directory that merely shares the root's name", () => {
+    expect(normalizePathPrefix(`${root}-old/app`, root)).toBe(`${root}-old/app`.replace(/^\//, ""));
   });
 });

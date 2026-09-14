@@ -77,6 +77,22 @@ export function checkStaleness(dbPath: string, files: string[]): IndexHealth {
   return { exists: true, staleFiles, indexedAt };
 }
 
+/**
+ * Indexed paths are repo-relative, but an agent reaches for absolute ones:
+ * every other tool it has — read_file, grep, list_dir — takes an absolute
+ * path. An unconverted prefix matched no chunk, so the filter discarded every
+ * hit and the search looked empty when retrieval had worked fine.
+ *
+ * Returns "" for the repo root itself, which the caller reads as no filter.
+ */
+export function normalizePathPrefix(prefix: string, repoRoot: string): string {
+  const root = resolve(repoRoot).replace(/\\/g, "/").replace(/\/+$/, "");
+  let p = prefix.trim().replace(/\\/g, "/");
+  if (p === root) return "";
+  if (p.startsWith(`${root}/`)) p = p.slice(root.length + 1);
+  return p.replace(/^(?:\.\/)+/, "").replace(/^\/+/, "");
+}
+
 /** Where a globally-installed run should keep indexes when the repo is read-only. */
 export function fallbackDbPath(repoRoot: string): string {
   const slug = repoRoot.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(-80);

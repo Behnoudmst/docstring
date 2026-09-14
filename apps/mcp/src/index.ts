@@ -12,8 +12,8 @@ import {
   VectorRetriever,
 } from "@docstring/retrieval";
 import { SqliteChunkStore, createEmbedder } from "@docstring/store";
-import { clampK, formatHits } from "./format.js";
-import { fallbackDbPath, resolvePaths } from "./paths.js";
+import { clampK, formatHits, formatNoPrefixMatch } from "./format.js";
+import { fallbackDbPath, normalizePathPrefix, resolvePaths } from "./paths.js";
 
 /**
  * stdout is the JSON-RPC channel. Anything written there that is not a
@@ -161,19 +161,31 @@ function createServer(): McpServer {
       inputSchema: z.object({
         query: z.string().describe("What to look for, described in plain language"),
         k: z.number().int().min(1).max(30).optional().describe("Results to return (default 8)"),
-        path_prefix: z.string().optional().describe("Restrict to a directory, e.g. 'src/lib/'"),
+        path_prefix: z
+          .string()
+          .optional()
+          .describe(
+            "Restrict to a directory, relative to the repository root, e.g. 'src/lib/'. " +
+              "An absolute path is accepted and converted. Omit it unless you already know " +
+              "the code is confined to that directory — a prefix that matches nothing " +
+              "returns nothing.",
+          ),
       }),
     },
     async ({ query, k, path_prefix }) => {
       try {
         const missing = await ensureIndexed();
         if (missing) return textResult(missing);
-        const { retriever } = open();
+        const { retriever, store } = open();
+        const prefix = path_prefix ? normalizePathPrefix(path_prefix, paths.repoRoot) : "";
         const hits = await retriever.retrieve(
           query,
           clampK(k, 8, 30),
-          path_prefix ? { pathPrefix: path_prefix } : undefined,
+          prefix ? { pathPrefix: prefix } : undefined,
         );
+        if (hits.length === 0 && prefix && !store.hasPathPrefix(prefix)) {
+          return textResult(formatNoPrefixMatch(path_prefix!, prefix));
+        }
         return textResult(formatHits(hits));
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);

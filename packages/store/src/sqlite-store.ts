@@ -354,6 +354,20 @@ export class SqliteChunkStore implements ChunkStore {
     };
   }
 
+  /**
+   * Whether any indexed chunk lives under a path prefix. Lets a caller tell a
+   * filter that matches nothing from a query that matches nothing — the two
+   * are indistinguishable in an empty result set, and reporting the wrong one
+   * sends the caller off to rephrase a query that was never the problem.
+   */
+  hasPathPrefix(prefix: string): boolean {
+    const pattern = `${prefix.replace(/[\\%_]/g, "\\$&")}%`;
+    const row = this.db
+      .prepare("select 1 as found from chunks where path like ? escape '\\' limit 1")
+      .get(pattern);
+    return row !== undefined;
+  }
+
   /** Content hashes of already-indexed files, for skipping unchanged ones. */
   fileHashes(repo: string): Map<string, string> {
     const rows = this.db

@@ -224,3 +224,24 @@ describe("keyword scores", () => {
     await s.close();
   });
 });
+
+describe("hasPathPrefix", () => {
+  it("distinguishes a prefix that covers indexed files from one that covers none", async () => {
+    const store = open(dbPath());
+    await store.upsertChunks([chunk()]);
+    expect(store.hasPathPrefix("src/")).toBe(true);
+    expect(store.hasPathPrefix("src/lib/")).toBe(true);
+    expect(store.hasPathPrefix("app/")).toBe(false);
+    await store.close();
+  });
+
+  it("treats LIKE wildcards as literal characters", async () => {
+    const store = open(dbPath());
+    await store.upsertChunks([chunk()]);
+    // Unescaped, "%" and "_" would match anything and claim coverage the
+    // index does not have.
+    expect(store.hasPathPrefix("%")).toBe(false);
+    expect(store.hasPathPrefix("_rc/")).toBe(false);
+    await store.close();
+  });
+});

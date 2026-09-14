@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clampK } from "./format.js";
+import { clampK, formatNoPrefixMatch } from "./format.js";
 
 describe("clampK", () => {
   it("passes valid values through", () => {
@@ -23,5 +23,24 @@ describe("clampK", () => {
 
   it("truncates fractional values", () => {
     expect(clampK(7.9, 8, 30)).toBe(7);
+  });
+});
+
+describe("formatNoPrefixMatch", () => {
+  it("names the prefix and says the filter, not the query, emptied the result", () => {
+    const msg = formatNoPrefixMatch("src/", "src/");
+    expect(msg).toContain("'src/'");
+    expect(msg).toContain("path_prefix");
+    expect(msg).not.toContain("read as");
+  });
+
+  it("shows both forms when the prefix was converted", () => {
+    const msg = formatNoPrefixMatch("/Users/ben/work/vekt/src", "src");
+    expect(msg).toContain("/Users/ben/work/vekt/src");
+    expect(msg).toContain("read as 'src'");
+  });
+
+  it("tells the caller emptiness is not evidence of absence", () => {
+    expect(formatNoPrefixMatch("src/", "src/")).toMatch(/not evidence/i);
   });
 });
