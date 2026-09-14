@@ -3,7 +3,7 @@ import { serveStdio } from "@modelcontextprotocol/server/stdio";
 import * as z from "zod/v4";
 import { Answerer, OllamaClient } from "@docstring/answer";
 import { indexRepo } from "@docstring/chunker";
-import type { Chunk } from "@docstring/core";
+import { EmbeddingMismatchError, type Chunk } from "@docstring/core";
 import {
   HybridRetriever,
   KeywordRetriever,
@@ -38,6 +38,40 @@ interface Session {
 let session: Session | null = null;
 
 /**
+ * Distinguishes "this path cannot be written" from every other failure.
+ *
+ * The fallback below exists for unwritable repos only. Catching everything
+ * swallowed the one error that matters most — an embedding mismatch — and
+ * silently reopened a different, empty database, so changing the embedding
+ * model looked like a missing index and the log blamed a write failure that
+ * had not happened.
+ */
+function isUnwritable(err: unknown): boolean {
+  const { code, errcode } = (err ?? {}) as { code?: string; errcode?: number };
+  if (code === "EACCES" || code === "EPERM" || code === "EROFS" || code === "ENOSPC") {
+    return true;
+  }
+  // node:sqlite reports SQLITE_READONLY (8), SQLITE_FULL (13) and
+  // SQLITE_CANTOPEN (14) as ERR_SQLITE_ERROR, with the raw code on `errcode`.
+  return code === "ERR_SQLITE_ERROR" && (errcode === 8 || errcode === 13 || errcode === 14);
+}
+
+/**
+ * Every tool opens the store first, index_repo included, so a mismatch cannot
+ * be cleared from inside the server. Naming the file to delete is what makes
+ * "re-index" an instruction the caller can actually follow.
+ */
+class ActionableError extends Error {}
+
+function explain(err: unknown, dbPath: string): unknown {
+  if (!(err instanceof EmbeddingMismatchError)) return err;
+  return new ActionableError(
+    `${err.message}\n\nThe embedding model changed, so this index cannot be reused. ` +
+      `Delete ${dbPath}, then call index_repo to rebuild it with ${err.current.model}.`,
+  );
+}
+
+/**
  * Opened once per process, not per call: a host spawns this server once and
  * calls it many times, and reopening SQLite would re-run the embedding
  * dimension check every time.
@@ -61,11 +95,16 @@ function open(): Session {
     store = build(dbPath);
   } catch (err) {
     // A read-only or otherwise unwritable repo should not stop the server:
-    // fall back to a per-repo index under the home directory.
-    if (paths.explicit) throw err;
+    // fall back to a per-repo index under the home directory. Only a genuine
+    // write failure earns that fallback — see isUnwritable.
+    if (paths.explicit || !isUnwritable(err)) throw explain(err, dbPath);
     dbPath = fallbackDbPath(paths.repoRoot);
     log(`cannot write ${paths.dbPath}, falling back to ${dbPath}`);
-    store = build(dbPath);
+    try {
+      store = build(dbPath);
+    } catch (fallbackErr) {
+      throw explain(fallbackErr, dbPath);
+    }
   }
 
   const base = new HybridRetriever(
@@ -266,11 +305,15 @@ function createServer(): McpServer {
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         log(`index_repo failed: ${message}`);
-        return errorResult(
-          `Indexing failed: ${message}\n\n` +
-            `This usually means Ollama is not running or the embedding model is not ` +
-            `installed. Try: ollama serve, then ollama pull nomic-embed-text`,
-        );
+        // An ActionableError already names the fix. Appending the generic guess
+        // would contradict it, and name a model the caller did not configure.
+        const hint =
+          err instanceof ActionableError
+            ? ""
+            : `\n\nThis usually means Ollama is not running or the embedding model is ` +
+              `not installed. Try: ollama serve, then ollama pull ` +
+              `${EMBEDDING.replace(/^ollama:/, "")}`;
+        return errorResult(`Indexing failed: ${message}${hint}`);
       }
     },
   );

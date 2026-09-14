@@ -330,10 +330,28 @@ export class SqliteChunkStore implements ChunkStore {
     return rows.map(toChunk);
   }
 
+  /**
+   * Read from `meta`, not from the configured values: this reports what the
+   * index was actually built with. The constructor keeps the two in step, so
+   * they normally agree — but answering from config would make this method
+   * echo the caller's own setting back at it, which is worthless precisely
+   * when someone is trying to find out why a model change had no effect.
+   */
   async indexInfo(): Promise<{ embeddingModel: string; embeddingDim: number } | null> {
     const count = this.db.prepare("select count(*) as n from chunks").get() as { n: number };
     if (count.n === 0) return null;
-    return { embeddingModel: this.embeddingModel, embeddingDim: this.embeddingDim };
+    const read = (key: string) =>
+      (this.db.prepare("select value from meta where key = ?").get(key) as
+        | { value: string }
+        | undefined)?.value;
+    const model = read("embedding_model");
+    const dim = read("embedding_dim");
+    // An index with chunks but no meta rows predates the meta table; fall back
+    // rather than claim the index is empty.
+    return {
+      embeddingModel: model ?? this.embeddingModel,
+      embeddingDim: dim === undefined ? this.embeddingDim : Number(dim),
+    };
   }
 
   /** Content hashes of already-indexed files, for skipping unchanged ones. */

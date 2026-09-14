@@ -94,9 +94,64 @@ Everything is optional.
 | `DOCSTRING_EMBEDDING` | `ollama:nomic-embed-text` |
 | `DOCSTRING_MODEL` | `qwen2.5:3b` |
 
+### Where to put them
+
+In the `env` block of your editor's MCP config — the same file where you
+registered the server. **A `.env` file in your project will not work.** Your
+editor spawns this server as a subprocess, so it only sees the variables that
+config hands it; it never reads `.env`, and an unset variable silently falls
+back to the default above.
+
+**VS Code / Copilot** — `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "docstring": {
+      "type": "stdio",
+      "command": "/absolute/path/from/which/docstring-mcp",
+      "env": {
+        "DOCSTRING_EMBEDDING": "ollama:qwen3-embedding:4b"
+      }
+    }
+  }
+}
+```
+
+**Claude Desktop / Cursor** — same `env` block, under `mcpServers`.
+
+Restart your editor afterwards. The first stderr line
+(**Output → MCP**) reports the models actually in use — check it there rather
+than assuming the variable was picked up.
+
+### Choosing an embedding model
+
+The default is `nomic-embed-text` (768d, 274MB) because it runs on any machine,
+including laptops without a GPU. It is the floor, not the ceiling.
+
+If your machine has the memory to spare, `qwen3-embedding:4b` (2560d, 2.5GB) is
+the recommended upgrade, and any larger model works too. The published results
+above were measured on the default, and the embedding model was not itself part
+of that comparison — a bigger embedder is the obvious first thing to try if
+recall matters more to you than footprint.
+
+```bash
+ollama pull qwen3-embedding:4b
+```
+
+```json
+"env": { "DOCSTRING_EMBEDDING": "ollama:qwen3-embedding:4b" }
+```
+
+Note the `ollama:` prefix is still required for a tagged model, so the value
+carries two colons.
+
 `DOCSTRING_EMBEDDING` also accepts `openai:text-embedding-3-small` with
-`OPENAI_API_KEY` set. Changing the embedding model requires deleting the index
-and re-indexing — the vector dimension is fixed when the index is created.
+`OPENAI_API_KEY` set.
+
+**Changing the embedding model requires deleting the index and re-indexing** —
+the vector dimension is fixed when the index is created. Delete
+`<repo>/.docstring/index.db`, then ask your agent to index again.
 
 If the repository is not writable, the index falls back to `~/.docstring/`.
 
