@@ -3,6 +3,7 @@ import type { Embedder } from "@docstring/core";
 /** Known dimensions, so a mismatch is caught before indexing rather than after. */
 export const KNOWN_DIMS: Record<string, number> = {
   "nomic-embed-text": 768,
+  "qwen3-embedding:4b": 2560,
   "mxbai-embed-large": 1024,
   "bge-m3": 1024,
   "all-minilm": 384,
@@ -200,9 +201,21 @@ export class OpenAIEmbedder implements Embedder {
   }
 }
 
+/**
+ * Parses `<provider>:<model>`, defaulting to Ollama when no provider is given.
+ *
+ * Only the first segment is a provider: an Ollama model carries its tag after a
+ * colon ("qwen3-embedding:4b"), so a split on every colon drops the tag and the
+ * model silently falls back to the default dimension.
+ */
 export function createEmbedder(spec: string): Embedder & { check(): Promise<void> } {
-  const m = /^(ollama|openai):(.+)$/.exec(spec);
-  const [provider, model] = m ? [m[1], m[2]] : ["ollama", spec];
+  const m = /^([^:]+):(.+)$/.exec(spec);
+  if (!m) return new OllamaEmbedder({ model: spec });
+  const [, provider, model] = m;
   if (provider === "openai") return new OpenAIEmbedder({ model });
-  return new OllamaEmbedder({ model });
+  if (provider === "ollama") return new OllamaEmbedder({ model });
+  throw new Error(
+    `Unknown embedding provider "${provider}". Use ollama:<model> or openai:<model> — ` +
+      `a tagged Ollama model needs the prefix too, as in "ollama:qwen3-embedding:4b".`,
+  );
 }
